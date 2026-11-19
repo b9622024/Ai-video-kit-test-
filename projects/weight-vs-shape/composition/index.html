@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-Hant" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <!-- GSAP 由 prepare-composition.py 從 node_modules 複製（不走 CDN） -->
+    <script src="vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Noto Sans TC"; font-weight: 400; src: url("fonts/NotoSansTC-Regular.otf"); }
+      @font-face { font-family: "Noto Sans TC"; font-weight: 700; src: url("fonts/NotoSansTC-Bold.otf"); }
+      @font-face { font-family: "Noto Sans TC"; font-weight: 900; src: url("fonts/NotoSansTC-Black.otf"); }
+      @font-face { font-family: "Noto Color Emoji"; src: url("fonts/NotoColorEmoji.ttf"); }
+
+      /* 品牌配色：brands/meko-hsu/brand.md */
+      :root {
+        --bg: #172a3a; --ink: #f4f1e8; --hi: #ffffff; --muted: #a7b4bf;
+        --r1: #e76f51; --r2: #f4a261; --r3: #e9c46a; --r4: #7fa7b8;
+        --soft: rgba(244, 241, 232, 0.1);
+        --ghost: rgba(244, 241, 232, 0.4);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      body { font-family: "Noto Sans TC", "Noto Color Emoji", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+      #root { position: relative; width: 1080px; height: 1920px; background: var(--bg); overflow: hidden; }
+      .scene { position: absolute; inset: 0; }
+      .abs { position: absolute; }
+      .emo { font-family: "Noto Color Emoji", sans-serif; line-height: 1; }
+
+      .title { left: 65px; top: 220px; font-size: 108px; font-weight: 900; letter-spacing: 0.02em; line-height: 1.2; }
+      .title.sm { font-size: 86px; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 12px; white-space: nowrap;
+        background: var(--hi); color: var(--bg); border-radius: 999px;
+        padding: 13px 37px; font-size: 41px; font-weight: 900; line-height: 1.2;
+      }
+      .pill.y { background: var(--r3); }
+      .badge {
+        width: 76px; height: 76px; border-radius: 50%; background: var(--r3); color: var(--bg);
+        display: grid; place-items: center; font-size: 56px; font-weight: 900; line-height: 1;
+      }
+      .card {
+        background: linear-gradient(var(--soft), var(--soft)), var(--bg); border-radius: 36px;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;
+      }
+      .inkcard {
+        background: var(--ink); color: var(--bg); border-radius: 40px;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;
+      }
+      .footnote { left: 76px; right: 76px; text-align: center; font-size: 37px; font-weight: 700; color: var(--muted); }
+      .ring { position: absolute; inset: -18px; border: 10px solid var(--hi); border-radius: 46px; }
+
+      /* 幾何剪影 */
+      .fig { position: absolute; width: 220px; }
+      .fig .head { position: absolute; left: 50px; top: 0; width: 120px; height: 120px; border-radius: 50%; background: var(--ghost); }
+      .fig .body { position: absolute; left: 10px; top: 140px; width: 200px; height: 420px; border-radius: 70px; background: var(--ghost); overflow: hidden; }
+      .fill { position: absolute; left: 0; right: 0; }
+
+      /* 色條 */
+      .bar { height: 110px; border-radius: 28px; display: flex; align-items: center; gap: 22px; padding-left: 36px; color: var(--bg); font-size: 52px; font-weight: 900; }
+      .bar .emo { font-size: 60px; }
+      .row { height: 140px; border-radius: 32px; background: var(--r3); color: var(--bg); display: flex; align-items: center; padding-left: 40px; gap: 14px; }
+      .row span { font-size: 46px; font-weight: 700; }
+      .row b { font-size: 72px; font-weight: 900; line-height: 1.1; }
+
+      #captions { position: absolute; left: 76px; right: 76px; top: 1375px; height: 205px; }
+      #captions p {
+        position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
+        text-align: center; font-size: 69px; font-weight: 700; line-height: 1.35; text-wrap: balance; opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="53.16" data-width="1080" data-height="1920">
+
+      <audio id="voice" src="silent.m4a" data-start="0" data-duration="53.16" data-track-index="9" data-volume="1"></audio>
+
+      <!-- S1：一樣 60 公斤（0–5.34） -->
+      <section id="g1" class="clip scene" data-start="0" data-duration="5.34" data-track-index="1">
+        <h1 id="s1-title" class="abs title">一樣 60 公斤<br />差在哪？</h1>
+        <div id="s1-figs" class="abs" style="inset:0">
+          <div class="fig" style="left:220px;top:700px"><div class="head"></div><div class="body"></div></div>
+          <div class="fig" style="left:640px;top:700px"><div class="head"></div><div id="s1-wide" class="body"></div></div>
+        </div>
+        <div id="s1-kg1" class="abs pill" style="left:225px;top:590px"><span class="emo">⚖️</span>60 kg</div>
+        <div id="s1-kg2" class="abs pill" style="left:645px;top:590px"><span class="emo">⚖️</span>60 kg</div>
+        <div id="s1-ne" class="abs" style="left:440px;top:880px;width:200px;text-align:center;font-size:150px;font-weight:900">≠</div>
+      </section>
+
+      <!-- S2＋S3：體重計量的是總重／密度不一樣（5.34–14.32） -->
+      <section id="g2" class="clip scene" data-start="5.34" data-duration="8.98" data-track-index="1">
+        <h1 id="s2-title" class="abs title sm">體重計量的是總重</h1>
+        <div id="b-fat" class="abs bar" style="left:240px;top:440px;width:600px;background:var(--r2)"><span class="emo">🟠</span>脂肪</div>
+        <div id="b-mus" class="abs bar" style="left:240px;top:570px;width:600px;background:var(--r4)"><span class="emo">💪</span>肌肉</div>
+        <div id="b-wat" class="abs bar" style="left:240px;top:700px;width:600px;background:var(--muted)"><span class="emo">💧</span>水分</div>
+        <div id="b-bone" class="abs bar" style="left:240px;top:830px;width:600px;background:var(--ghost)"><span class="emo">🦴</span>骨頭</div>
+        <div id="s2-ring" class="abs" style="left:240px;top:440px;width:600px;height:500px"><div class="ring"></div></div>
+        <div id="s2-sum" class="abs pill y" style="left:385px;top:360px">全部加總</div>
+        <div id="s2-scale" class="abs" data-layout-allow-occlusion style="left:190px;top:990px;width:700px;height:170px;border-radius:40px;background:var(--r4);display:flex;align-items:center;justify-content:center">
+          <div data-layout-allow-occlusion style="position:relative;background:var(--bg);color:var(--ink);border-radius:20px;padding:10px 40px;font-size:64px;font-weight:900">
+            60.0 kg
+            <div id="s2-win" class="ring" style="inset:-16px;border-radius:30px"></div>
+          </div>
+        </div>
+        <div id="s3-card" class="abs inkcard" data-layout-allow-overlap style="left:160px;top:1040px;width:760px;height:280px">
+          <span style="font-size:64px;font-weight:900">密度不一樣</span>
+          <span style="font-size:70px"><span class="emo">💪</span> ≠ <span class="emo">🟠</span></span>
+        </div>
+      </section>
+
+      <!-- S4＋S5：同樣 1 公斤／BMI（14.32–28.14） -->
+      <section id="g4" class="clip scene" data-start="14.32" data-duration="13.82" data-track-index="1">
+        <div id="s4body" class="abs" data-layout-allow-occlusion style="inset:0">
+          <h1 id="s4-title" class="abs title">同樣 1 公斤</h1>
+          <div id="s4-cubes" class="abs" style="left:0;top:420px;width:1080px;height:600px">
+            <div id="c-mus" class="abs" style="left:170px;top:17px;width:300px;height:300px;border-radius:24px;background:var(--r4)"></div>
+            <div id="c-mus-l" class="abs" data-layout-allow-occlusion style="left:170px;top:340px;width:300px;text-align:center;font-size:58px;font-weight:900">肌肉 1 kg</div>
+            <div id="c-fat" class="abs" style="left:590px;top:0;width:317px;height:317px;border-radius:24px;background:var(--r2)">
+              <div id="c-ring" class="ring" style="border-radius:40px"></div>
+            </div>
+            <div id="c-fat-l" class="abs" data-layout-allow-occlusion style="left:598px;top:340px;width:300px;text-align:center;font-size:58px;font-weight:900">脂肪 1 kg</div>
+            <div id="c-pct" class="abs" style="left:0;right:0;top:450px;text-align:center"><span class="pill y" data-layout-allow-occlusion style="font-size:60px">約多 18% 體積</span></div>
+          </div>
+          <div id="s4-figs" class="abs" style="inset:0">
+            <div class="fig" style="left:230px;top:790px;transform:scale(.8);transform-origin:50% 0">
+              <div class="head"></div>
+              <div class="body"><div id="f1-fat" class="fill" style="top:0;height:30%;background:var(--r2)"></div><div id="f1-mus" class="fill" style="bottom:0;height:70%;background:var(--r4)"></div></div>
+            </div>
+            <div class="fig" style="left:630px;top:790px;transform:scale(.8);transform-origin:50% 0">
+              <div class="head"></div>
+              <div class="body" style="left:-5px;width:230px"><div id="f2-fat" class="fill" style="top:0;height:60%;background:var(--r2)"></div><div id="f2-mus" class="fill" style="bottom:0;height:40%;background:var(--r4)"></div></div>
+              <div id="f2-out" class="abs" style="left:-30px;top:115px;width:280px;height:470px;border:6px dashed var(--ink);border-radius:90px"></div>
+            </div>
+            <div id="s4-kg" class="abs pill" style="left:420px;top:1000px;font-size:38px;padding:10px 26px">都是 60 kg</div>
+          </div>
+          <div id="s4-fn" class="abs footnote" style="top:1270px">依密度 肌肉 1.06、脂肪 0.90 g/cm³ 換算</div>
+        </div>
+        <div id="s5-card" class="abs inkcard" data-layout-allow-overlap style="left:110px;top:480px;width:860px;height:300px">
+          <span style="font-size:80px;font-weight:900;line-height:1.2">BMI ＝ <span id="s5-w" style="border-radius:16px;padding:0 10px">體重</span> ÷ <span id="s5-h" style="border-radius:16px;padding:0 10px">身高²</span></span>
+          <span style="font-size:40px;font-weight:700">只用身高和體重</span>
+        </div>
+        <div id="s5-mus" class="abs card" data-layout-allow-occlusion style="left:170px;top:850px;width:320px;height:280px">
+          <span class="emo" style="font-size:110px">💪</span><span style="font-size:54px;font-weight:900">肌肉</span>
+          <div class="abs badge" style="right:-26px;top:-30px">?</div>
+        </div>
+        <div id="s5-fat" class="abs card" data-layout-allow-occlusion style="left:590px;top:850px;width:320px;height:280px">
+          <span class="emo" style="font-size:110px">🟠</span><span style="font-size:54px;font-weight:900">脂肪</span>
+          <div class="abs badge" style="right:-26px;top:-30px">?</div>
+        </div>
+      </section>
+
+      <!-- S6＋S7：量腰圍／腰圍標準／每月量一次（28.14–41.97） -->
+      <section id="g6" class="clip scene" data-start="28.14" data-duration="13.83" data-track-index="1">
+        <div id="s6body" class="abs" data-layout-allow-occlusion style="inset:0">
+          <h1 id="s6-title" class="abs title sm">今天就做：量腰圍</h1>
+          <h1 id="s6-title2" class="abs title">腰圍標準</h1>
+          <div id="s6-fig" class="abs" style="left:300px;top:420px;width:560px;height:620px">
+            <div class="fig" style="left:30px;top:0"><div class="head"></div><div class="body"></div></div>
+            <div id="s6-band" class="abs" style="left:20px;top:420px;width:240px;height:40px;border-radius:20px;background:var(--r3)"></div>
+            <div id="s6-ruler" class="abs card" style="left:330px;top:150px;width:210px;height:210px">
+              <span class="emo" style="font-size:110px">📏</span><span style="font-size:40px;font-weight:700">捲尺</span>
+            </div>
+          </div>
+          <div id="s6-m" class="abs row" style="left:440px;top:600px;width:575px"><span>男性</span><b>≥ 90</b><span>公分</span></div>
+          <div id="s6-f" class="abs row" style="left:440px;top:770px;width:575px"><span>女性</span><b>≥ 80</b><span>公分</span></div>
+          <div id="s6-pill" class="abs pill" style="left:470px;top:960px">超過＝腹部肥胖</div>
+        </div>
+        <div id="s6-fn" class="abs footnote" style="top:1270px">出處：衛福部國民健康署</div>
+        <div id="s7-card" class="abs card" data-layout-allow-overlap style="left:50px;top:560px;width:980px;height:420px;flex-direction:row;gap:30px">
+          <div id="s7-a" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+            <span class="emo" style="font-size:120px">⚖️</span><span style="font-size:52px;font-weight:900">天天量體重</span>
+          </div>
+          <span style="font-size:80px;font-weight:900">→</span>
+          <div id="s7-b" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 20px">
+            <span class="emo" style="font-size:120px">📏</span><span style="font-size:52px;font-weight:900;color:var(--r3)">每月量腰圍</span>
+            <div id="s7-ring" class="ring" style="inset:-10px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S8：自我介紹（41.97–45.03） -->
+      <section id="g8" class="clip scene" data-start="41.97" data-duration="3.06" data-track-index="1">
+        <div id="s8-name" class="abs" style="left:0;right:0;top:1260px;text-align:center;font-size:39px;font-weight:700;color:var(--muted)">崇銘｜專業體態管理教練</div>
+      </section>
+
+      <!-- S9：結尾 CTA（45.03–53.16）；文字由 project.json 填入 -->
+      <section id="g9" class="clip scene" data-start="45.03" data-duration="8.13" data-track-index="1">
+        <div id="s9-q" class="abs" data-cta="question" style="left:65px;right:65px;top:430px;text-align:center;font-size:70px;font-weight:900;line-height:1.3;white-space:nowrap">想知道你的體態卡在哪裡嗎？</div>
+        <div id="s9-card" class="abs" style="left:110px;top:720px;width:860px;height:380px;border-radius:48px;background:var(--hi);color:var(--bg);display:flex;align-items:center;justify-content:center;gap:28px">
+          <span class="emo" style="font-size:110px">💬</span>
+          <span style="font-size:84px;font-weight:900">留言</span>
+          <span id="s9-kw" data-cta="keyword" style="display:inline-block;background:var(--r3);border-radius:40px;padding:10px 40px;font-size:130px;font-weight:900;line-height:1.15">體態</span>
+        </div>
+        <div id="s9-act" class="abs" data-cta="action-tail" style="left:65px;right:65px;top:1160px;text-align:center;font-size:54px;font-weight:700">領取外食族體態自我檢查表！</div>
+      </section>
+
+      <div id="captions" class="clip" data-start="0" data-duration="53.16" data-track-index="5" data-hide-from="45.03">
+        <!-- CAPTIONS:BEGIN -->
+        <p data-s="0.60" data-e="2.50">一樣 60 公斤</p>
+        <p data-s="2.50" data-e="5.34">看起來卻可能完全不一樣</p>
+        <p data-s="5.34" data-e="7.97">因為體重計量的是總重</p>
+        <p data-s="7.97" data-e="9.74">骨頭、水分、肌肉、脂肪</p>
+        <p data-s="9.74" data-e="11.26">全算在一起</p>
+        <p data-s="11.26" data-e="14.32">但肌肉和脂肪的密度不一樣</p>
+        <p data-s="14.32" data-e="15.43">同樣 1 公斤</p>
+        <p data-s="15.43" data-e="18.28">脂肪的體積多了將近兩成</p>
+        <p data-s="18.28" data-e="20.28">所以體重一樣，脂肪多</p>
+        <p data-s="20.28" data-e="22.23">看起來就大一圈</p>
+        <p data-s="22.23" data-e="24.86">BMI 也只用身高和體重算</p>
+        <p data-s="24.86" data-e="28.14">分不出你重的是肌肉還是脂肪</p>
+        <p data-s="28.14" data-e="30.14">外食族今天就能做的</p>
+        <p data-s="30.14" data-e="31.88">拿捲尺量腰圍</p>
+        <p data-s="31.88" data-e="33.83">國健署的標準是</p>
+        <p data-s="33.83" data-e="36.50">男生 90、女生 80 公分以上</p>
+        <p data-s="36.50" data-e="38.01">算腹部肥胖</p>
+        <p data-s="38.01" data-e="39.57">與其天天盯體重</p>
+        <p data-s="39.57" data-e="41.97">不如每月量一次腰圍</p>
+        <p data-s="41.97" data-e="45.03">我是崇銘，專業體態管理教練</p>
+        <p data-s="45.03" data-e="48.10">想知道你的體態卡在哪裡嗎？</p>
+        <p data-s="48.10" data-e="48.99">留言「體態」</p>
+        <p data-s="48.99" data-e="52.06">領取外食族體態自我檢查表！</p>
+        <!-- CAPTIONS:END -->
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const fadeUp = (s, t) => tl.fromTo(s, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, t);
+      const slideIn = (s, t) => tl.fromTo(s, { opacity: 0, x: -54 }, { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, t);
+      const pop = (s, t) => tl.fromTo(s, { opacity: 0, y: -86, scale: 0.6 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2.2)" }, t);
+      const fadeIn = (s, t) => tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "none" }, t);
+      const fadeOut = (s, t, to = 0) => tl.to(s, { opacity: to, duration: 0.35, ease: "none" }, t);
+      const breathe = (s, t, end, scale = 1.025) => {
+        const n = Math.max(1, Math.floor((end - t) / 1.1));
+        tl.to(s, { scale, duration: 0.55, ease: "sine.inOut", yoyo: true, repeat: n * 2 - 1 }, t);
+      };
+
+      // S1（0–5.34）：標題第 0 格就在
+      gsap.set(["#s1-kg1", "#s1-kg2", "#s1-ne"], { opacity: 0 });
+      fadeIn("#s1-figs", 0.3);
+      pop("#s1-kg1", 1.1);
+      pop("#s1-kg2", 1.1);
+      tl.to("#s1-wide", { scaleX: 1.15, duration: 0.6, ease: "power2.inOut" }, 3.83);
+      fadeIn("#s1-ne", 3.95);
+
+      // S2（5.34–11.26）
+      gsap.set(["#s2-win", "#s2-ring", "#s2-sum", "#b-bone", "#b-wat", "#b-mus", "#b-fat", "#s3-card"], { opacity: 0 });
+      fadeUp("#s2-title", 5.4);
+      fadeUp("#s2-scale", 5.7);
+      fadeIn("#s2-win", 7.12);
+      slideIn("#b-bone", 7.97);
+      slideIn("#b-wat", 8.41);
+      slideIn("#b-mus", 8.86);
+      slideIn("#b-fat", 9.30);
+      fadeOut("#s2-win", 9.74);
+      fadeIn("#s2-ring", 9.74);
+      fadeUp("#s2-sum", 9.9);
+      // S3（11.26–14.32）：只留肌肉、脂肪
+      fadeOut(["#s2-title", "#s2-scale", "#b-bone", "#b-wat", "#s2-ring", "#s2-sum"], 11.26, 0.2);
+      pop("#s3-card", 12.81);
+
+      // S4（14.32–22.23）
+      gsap.set(["#c-mus", "#c-mus-l", "#c-fat", "#c-fat-l", "#c-ring", "#c-pct", "#s4-fn", "#s4-figs", "#f1-fat", "#f1-mus", "#f2-fat", "#f2-mus", "#f2-out", "#s5-card", "#s5-mus", "#s5-fat"], { opacity: 0 });
+      fadeUp("#s4-title", 14.77);
+      pop("#c-mus", 14.9);
+      fadeUp("#c-mus-l", 15.1);
+      pop("#c-fat", 15.43);
+      fadeUp("#c-fat-l", 15.63);
+      fadeIn("#c-ring", 17.43);
+      fadeUp("#c-pct", 17.5);
+      fadeIn("#s4-fn", 17.43);
+      breathe("#c-ring", 17.8, 18.2, 1.02);
+      tl.to("#s4-cubes", { scale: 0.55, y: -40, transformOrigin: "50% 0%", duration: 0.6, ease: "power2.inOut" }, 18.28);
+      fadeIn("#s4-figs", 18.6);
+      fadeIn(["#f1-fat", "#f1-mus", "#f2-fat", "#f2-mus"], 19.61);
+      fadeIn("#f2-out", 21.17);
+      fadeOut("#s4-fn", 21.9);
+
+      // S5（22.23–28.14）
+      fadeOut("#s4body", 22.23, 0.1);
+      pop("#s5-card", 22.3);
+      tl.to("#s5-h", { backgroundColor: "#e9c46a", duration: 0.3 }, 23.12);
+      tl.to("#s5-w", { backgroundColor: "#e9c46a", duration: 0.3 }, 23.79);
+      pop("#s5-mus", 26.41);
+      pop("#s5-fat", 27.30);
+
+      // S6（28.14–38.01）
+      gsap.set(["#s6-title2", "#s6-ruler", "#s6-m", "#s6-f", "#s6-pill", "#s6-fn", "#s7-card", "#s7-ring"], { opacity: 0 });
+      gsap.set("#s6-band", { scaleX: 0, transformOrigin: "0% 50%" });
+      fadeUp("#s6-title", 28.2);
+      fadeIn("#s6-fig", 28.4);
+      pop("#s6-ruler", 30.37);
+      tl.to("#s6-band", { scaleX: 1, duration: 0.6, ease: "power2.out" }, 31.03);
+      fadeOut("#s6-title", 31.88);
+      fadeOut("#s6-ruler", 31.88);
+      fadeUp("#s6-title2", 32.1);
+      tl.to("#s6-fig", { x: -235, y: 150, scale: 0.6, transformOrigin: "0% 0%", duration: 0.6, ease: "power2.inOut" }, 31.88);
+      fadeIn("#s6-fn", 31.88);
+      slideIn("#s6-m", 33.83);
+      slideIn("#s6-f", 34.72);
+      fadeUp("#s6-pill", 36.72);
+      // S7（38.01–41.97）
+      fadeOut("#s6body", 38.01, 0.12);
+      pop("#s7-card", 38.1);
+      fadeOut("#s7-a", 39.12, 0.4);
+      gsap.set("#s7-b", { opacity: 0 });
+      pop("#s7-b", 40.01);
+      fadeIn("#s7-ring", 41.12);
+      breathe("#s7-ring", 41.12, 41.9, 1.03);
+
+      // S8（41.97–45.03）
+      gsap.set("#s8-name", { opacity: 0 });
+      fadeIn("#s8-name", 42.41);
+
+      // S9 CTA（45.03–53.16）
+      gsap.set(["#s9-q", "#s9-card", "#s9-act"], { opacity: 0 });
+      fadeUp("#s9-q", 45.03);
+      pop("#s9-card", 48.10);
+      breathe("#s9-kw", 48.6, 53.1, 1.06);
+      fadeUp("#s9-act", 48.99);
+
+      const hideFrom = +document.getElementById("captions").dataset.hideFrom || Infinity;
+      document.querySelectorAll("#captions p").forEach((p) => {
+        const s = +p.dataset.s, e = Math.min(+p.dataset.e, hideFrom);
+        if (s >= hideFrom) return;
+        tl.set(p, { opacity: 1 }, s);
+        tl.set(p, { opacity: 0 }, e);
+      });
+
+      tl.set({}, {}, 53.16);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
